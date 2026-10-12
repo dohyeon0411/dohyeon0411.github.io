@@ -1,1 +1,190 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mood & Music</title>
+    <!-- 세련된 폰트 적용 (Pretendard) -->
+    <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+    <style>
+        /* 기본 설정 */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: 'Pretendard', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            /* 부드럽게 움직이는 그라데이션 배경 */
+            background: linear-gradient(-45deg, #ff9a9e, #fecfef, #a1c4fd, #c2e9fb);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            color: #333;
+        }
+        
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
 
+        /* 글래스모피즘(유리 질감) 카드 디자인 */
+        .container {
+            background: rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            border-radius: 20px;
+            padding: 50px 40px;
+            width: 90%;
+            max-width: 450px;
+            text-align: center;
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h1 {
+            font-size: 2rem;
+            font-weight: 800;
+            color: #4a4a4a;
+            margin-bottom: 10px;
+            letter-spacing: -1px;
+        }
+
+        p {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 1rem;
+            word-break: keep-all;
+        }
+
+        /* 입력창 디자인 */
+        input {
+            width: 100%;
+            padding: 16px 20px;
+            margin-bottom: 20px;
+            border: none;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.7);
+            font-size: 16px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+            outline: none;
+        }
+
+        input:focus {
+            background: #fff;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            transform: scale(1.02);
+        }
+
+        /* 버튼 디자인 */
+        button {
+            width: 100%;
+            padding: 16px 20px;
+            border: none;
+            border-radius: 12px;
+            background: #667eea;
+            color: #fff;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        button:hover {
+            background: #764ba2;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(118, 75, 162, 0.5);
+        }
+
+        /* 결과창 디자인 */
+        #result-container {
+            margin-top: 30px;
+            min-height: 80px;
+        }
+
+        #result {
+            font-size: 1.1rem;
+            color: #333;
+            font-weight: 500;
+            line-height: 1.5;
+            background: rgba(255, 255, 255, 0.6);
+            padding: 20px;
+            border-radius: 15px;
+            display: none;
+            animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+
+        @keyframes popIn {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .song-title {
+            display: block;
+            font-size: 1.3rem;
+            font-weight: 800;
+            color: #764ba2;
+            margin-top: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>당신의 순간, 당신의 음악</h1>
+        <p>지금 어떤 기분인지, 무엇을 하고 있는지 알려주세요.</p>
+        
+        <input type="text" id="situation" placeholder="예: 비 오는 날 창밖을 보며 커피 한잔">
+        <button onclick="recommendMusic()">음악 추천받기</button>
+        
+        <div id="result-container">
+            <div id="result"></div>
+        </div>
+    </div>
+
+    <script>
+        function recommendMusic() {
+            const situation = document.getElementById('situation').value;
+            const resultDiv = document.getElementById('result');
+            
+            if (!situation.trim()) {
+                alert("현재 상황이나 기분을 입력해주세요!");
+                return;
+            }
+
+            resultDiv.style.display = 'block';
+            
+            if (situation.includes('비') || situation.includes('우산')) {
+                resultDiv.innerHTML = "이런 촉촉한 날씨에는<br><span class='song-title'>☔️ 헤이즈 - 비도 오고 그래서</span>";
+            } else if (situation.includes('운동') || situation.includes('헬스') || situation.includes('러닝')) {
+                resultDiv.innerHTML = "심박수를 올려줄 신나는 팝송!<br><span class='song-title'>🔥 Dua Lipa - Levitating</span>";
+            } else if (situation.includes('코딩') || situation.includes('집중') || situation.includes('공부')) {
+                resultDiv.innerHTML = "몰입을 위한 잔잔한 백그라운드<br><span class='song-title'>🎧 Lofi Girl - Lofi Hip Hop Radio</span>";
+            } else if (situation.includes('우울') || situation.includes('슬픔') || situation.includes('눈물')) {
+                resultDiv.innerHTML = "당신의 마음을 포근하게 안아줄 곡<br><span class='song-title'>🌙 아이유 - 밤편지</span>";
+            } else if (situation.includes('드라이브') || situation.includes('여행')) {
+                resultDiv.innerHTML = "창문을 열고 달릴 때 딱 어울리는 곡<br><span class='song-title'>🚗 DAY6 - 한 페이지가 될 수 있게</span>";
+            } else {
+                resultDiv.innerHTML = "당신의 특별한 순간을 더 빛내줄 음악<br><span class='song-title'>✨ NewJeans - Hype Boy</span>";
+            }
+        }
+
+        document.getElementById('situation').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                recommendMusic();
+            }
+        });
+    </script>
+</body>
+</html
